@@ -92,12 +92,49 @@ if($type === 'breakfast' || $type === 'lunch' || $type === 'dinner' || $type ===
         ];
         echo json_encode($responseData, JSON_UNESCAPED_UNICODE);
     } elseif ($type === 'schedule') {
+        if (strlen($date) != 8) {
+            $code_number = "INFO-500";
+            $info_message = "요청인자가 잘못되었습니다. 날짜는 YYYYMMDD 형식으로 입력해주세요.";
+            $responseData = [
+                'status' => [
+                    'code' => $code_number,
+                    'message' => $info_message,
+                ]
+            ];
+            echo json_encode($responseData, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
         $apiUrl = sprintf('%s?Key=%s&Type=json&ATPT_OFCDC_SC_CODE=%s&SD_SCHUL_CODE=%s&AA_YMD=%s',
             $scheduleApiUrl, $apiKey, $atptOfcdcScCode, $sdSchulCode, $date);
     } elseif ($type === 'lunch') {
+        if (strlen($date) != 8) {
+            $code_number = "INFO-500";
+            $info_message = "요청인자가 잘못되었습니다. 날짜는 YYYYMMDD 형식으로 입력해주세요.";
+            $responseData = [
+                'status' => [
+                    'code' => $code_number,
+                    'message' => $info_message,
+                ]
+            ];
+            echo json_encode($responseData, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
         $apiUrl = sprintf('%s?Key=%s&Type=json&ATPT_OFCDC_SC_CODE=%s&SD_SCHUL_CODE=%s&MLSV_YMD=%s',
             $lunchApiUrl, $apiKey, $atptOfcdcScCode, $sdSchulCode, $date);
     } elseif ($type === 'timetable') {
+        if (strlen($date) != 8) {
+            $code_number = "INFO-500";
+            $info_message = "요청인자가 잘못되었습니다. 날짜는 YYYYMMDD 형식으로 입력해주세요.";
+            $responseData = [
+                'status' => [
+                    'code' => $code_number,
+                    'message' => $info_message,
+                ]
+            ];
+            echo json_encode($responseData, JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        
         if ($grade === '' || $class_nm === '') {
             $code_number = "INFO-300";
             $info_message = "요청인자가 누락되었습니다.";
@@ -111,7 +148,7 @@ if($type === 'breakfast' || $type === 'lunch' || $type === 'dinner' || $type ===
             exit;
         }
 
-        $apiUrl = sprintf('%s?Key=%s&Type=json&ATPT_OFCDC_SC_CODE=%s&SD_SCHUL_CODE=%s&SEM=1&ALL_TI_YMD=%s&GRADE=%s&CLASS_NM=%s',
+        $apiUrl = sprintf('%s?Key=%s&Type=json&ATPT_OFCDC_SC_CODE=%s&SD_SCHUL_CODE=%s&ALL_TI_YMD=%s&GRADE=%s&CLASS_NM=%s',
             $timetableApiUrl, $apiKey, $atptOfcdcScCode, $sdSchulCode, $date, $grade, $class_nm);
     }
 
